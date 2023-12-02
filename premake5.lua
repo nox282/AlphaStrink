@@ -50,7 +50,7 @@ group "Engine"
 
 group ""
 -- Executables
-project "Sandbox"
+project "AlphaShrink"
     kind "ConsoleApp"
     location "%{prj.name}"
 
@@ -59,20 +59,3 @@ project "Sandbox"
     links { "Core", "OpenGL", "ECS", "Camera", "FloatingCamera", "Assets", "RenderAPI" }
 
     includedirs { moduledir .. "/**", "/%{prj.name}" }
-
-    -- glew
-    includedirs { thirdpartiesdir .. "/glew-2.2.0/include" }
-    libdirs { thirdpartiesdir .. "/glew-2.2.0/lib/Release/x64/" }
-    links { "glew32s" }
-
-    ---- glfw
-    includedirs { thirdpartiesdir .. "/glfw-3.3.8.bin.WIN64/include" }
-    libdirs { thirdpartiesdir .. "/glfw-3.3.8.bin.WIN64/lib-vc2022/" }
-    links { "glfw3" }
-
-    -- openGL
-    links { "OpenGL32" }
-
-    -- stb (image)
-    includedirs { thirdpartiesdir .. "/stb"}
-
