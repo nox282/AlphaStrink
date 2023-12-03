@@ -1,6 +1,6 @@
 include "locations.lua"
 
-workspace "Mani"
+workspace "AlphaShrink"
 
 configurations { "Debug", "Release", "Distribution" }
     platforms { "Win64", "MacOSX" }
@@ -54,8 +54,8 @@ project "AlphaShrink"
     kind "ConsoleApp"
     location "%{prj.name}"
 
-    files { "%{prj.name}/**.h", "%{prj.name}/**.cpp" }
+    files { "%{prj.name}/Sources/**.h", "%{prj.name}/Sources/**.cpp" }
 
     links { "Core", "OpenGL", "ECS", "Camera", "FloatingCamera", "Assets", "RenderAPI" }
 
-    includedirs { moduledir .. "/**", "/%{prj.name}" }
+    includedirs { moduledir .. "/**", "%{prj.name}/Sources/" }

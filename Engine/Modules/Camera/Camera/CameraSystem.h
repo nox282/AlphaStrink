@@ -18,6 +18,8 @@ namespace Mani
 		float height = 800.f;
 		float nearClipPlane = .1f;
 		float farClipPlane = 1000.f;
+
+		float getAspectRatio() const;
 	};
 
 	struct CameraComponent
@@ -44,6 +46,8 @@ namespace Mani
 
 		void setCameraConfig(EntityRegistry& registry, const CameraConfig& config);
 
+		glm::vec2 worldToScreenSpace(glm::vec3 position, const EntityRegistry& registry) const;
+		
 	private:
 		EntityId m_cameraId;
 	};
