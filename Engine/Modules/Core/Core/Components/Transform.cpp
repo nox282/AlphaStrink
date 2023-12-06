@@ -5,12 +5,11 @@
 
 using namespace Mani;
 
-glm::mat4 Transform::calculate()
+glm::mat4 Transform::calculate() const
 {
-	transform = glm::translate(glm::mat4(1.0f), position) *
-				glm::toMat4(rotation) *
-				glm::scale(glm::mat4(1.0f), scale);
-	return transform;
+	return	glm::translate(glm::mat4(1.0f), position) *
+			glm::toMat4(rotation) *
+			glm::scale(glm::mat4(1.0f), scale);
 }
 
 glm::vec3 Transform::forward() const
@@ -31,7 +30,17 @@ glm::vec3 Transform::right() const
 	return glm::normalize(right);
 }
 
-glm::mat4 Transform::getTransform() const
+void Mani::Transform::apply(const Transform& other)
 {
-	return transform;
+	glm::mat4 otherMat4 = other.calculate();
+	glm::mat4 mat4 = calculate();
+	glm::mat4 result = otherMat4 * mat4;
+
+	position = result[3];
+
+	rotation *= other.rotation;
+
+	scale.x = glm::length(glm::vec3(result[0]));
+	scale.y = glm::length(glm::vec3(result[1]));
+	scale.z = glm::length(glm::vec3(result[2]));
 }

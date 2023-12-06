@@ -3,6 +3,7 @@
 #include <Camera/CameraSystem.h>
 
 #include <Game/Systems/PlayerSystem.h>
+#include <Game/Systems/PlayAreaSystem.h>
 #include <Game/Components/BoxComponent.h>
 
 std::string_view PlayerCameraSystem::getName() const
@@ -18,7 +19,6 @@ bool PlayerCameraSystem::shouldTick(Mani::EntityRegistry& registry) const
 void PlayerCameraSystem::onInitialize(Mani::EntityRegistry& registry, Mani::SystemContainer& systemContainer)
 {
     m_cameraSystem = systemContainer.initializeDependency<Mani::CameraSystem>();
-    m_playerSystem = systemContainer.initializeDependency<PlayerSystem>();
 }
 
 void PlayerCameraSystem::onDeinitialize(Mani::EntityRegistry& registry)
@@ -27,19 +27,29 @@ void PlayerCameraSystem::onDeinitialize(Mani::EntityRegistry& registry)
 
 void PlayerCameraSystem::tick(float deltaTime, Mani::EntityRegistry& registry)
 {
-    if (m_cameraSystem.expired() || m_playerSystem.expired())
+    if (m_cameraSystem.expired())
     {
         return;
     }
 
     std::shared_ptr<Mani::CameraSystem> cameraSystem = m_cameraSystem.lock();
-    std::shared_ptr<PlayerSystem> playerSystem = m_playerSystem.lock();
+    
+    Mani::RegistryView<Mani::Transform, PlayArea, BoxComponent> playAreaView(registry);
 
-    BoxComponent* playerAreaBox = registry.getComponent<BoxComponent>(playerSystem->getPlayerAreaEntityId());
-    Mani::Transform* playerAreaTransform = registry.getComponent<Mani::Transform>(playerSystem->getPlayerAreaEntityId());
+    if (playAreaView.begin() == playAreaView.end())
+    {
+        MANI_LOG_ERROR(Mani::Log, "No play area found");
+        return;
+    }
+
+    const Mani::EntityId playAreaEntityId = *playAreaView.begin();
+
+    BoxComponent* playerAreaBox = registry.getComponent<BoxComponent>(playAreaEntityId);
+    Mani::Transform* playerAreaTransform = registry.getComponent<Mani::Transform>(playAreaEntityId);
+   
     if (playerAreaBox == nullptr || playerAreaTransform == nullptr)
     {
-        MANI_LOG_ERROR(Mani::Log, "Could not get player area");
+        MANI_LOG_ERROR(Mani::Log, "Could not get play area");
         return;
     }
 

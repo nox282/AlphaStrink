@@ -8,6 +8,7 @@
 #include "Game/Systems/PlayerSystem.h"
 #include "Game/Systems/GameSceneSystem.h"
 #include "Game/Systems/PlayerCameraSystem.h"
+#include "Game/Systems/PlayAreaSystem.h"
 
 #include <FloatingCamera/FloatingCameraControllerSystem.h>
 
@@ -34,6 +35,7 @@ void initializeGameWorld(const std::shared_ptr<World>& world)
 {
 	SystemContainer& systemContainer = world->getSystemContainer();
 	systemContainer.createSystem<OpenGLRenderSystem>()
+		.createSystem<PlayAreaSystem>()
 		.createSystem<PlayerSystem>()
 		.createSystem<PlayerCameraSystem>()
 		.createSystem<GameSceneSystem>();

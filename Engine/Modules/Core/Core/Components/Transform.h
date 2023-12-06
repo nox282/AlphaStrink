@@ -13,7 +13,7 @@ namespace Mani
 		glm::quat rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
 		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 
-		glm::mat4 calculate();
+		glm::mat4 calculate() const;
 	
 		glm::vec3 forward() const;
 		glm::vec3 up() const;
@@ -21,7 +21,6 @@ namespace Mani
 
 		glm::mat4 getTransform() const;
 
-	private:
-		glm::mat4 transform;
+		void apply(const Transform& other);
 	};
 }

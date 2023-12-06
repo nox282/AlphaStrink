@@ -1,7 +1,5 @@
 #include "GameSceneSystem.h"
 
-#include <Core/Components/Transform.h>
-
 #include <Assets/AssetSystem.h>
 
 #include <RenderAPI/MeshComponent.h>

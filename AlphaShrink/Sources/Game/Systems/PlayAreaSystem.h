@@ -4,14 +4,24 @@
 
 namespace Mani
 {
-	class CameraSystem;
+	struct Transform;
 }
 
-class PlayerCameraSystem : public Mani::SystemBase
+struct BoxComponent;
+
+struct PlayArea {};
+
+struct PlayAreaChild
+{
+	Mani::Transform localTransform;
+};
+
+class PlayAreaSystem : public Mani::SystemBase
 {
 public:
 	virtual std::string_view getName() const override;
 	virtual bool shouldTick(Mani::EntityRegistry& registry) const override;
+
 	virtual void tick(float deltaTime, Mani::EntityRegistry& registry) override;
 
 protected:
@@ -19,5 +29,5 @@ protected:
 	virtual void onDeinitialize(Mani::EntityRegistry& registry) override;
 
 private:
-	std::weak_ptr<Mani::CameraSystem> m_cameraSystem;
+	Mani::EntityId m_playAreaEntityId;
 };
