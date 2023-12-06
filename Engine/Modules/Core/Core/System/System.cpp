@@ -44,6 +44,7 @@ void SystemBase::enable()
         return;
     }
 
+    m_isEnabled = true;
     onEnabled();
 }
 
@@ -54,6 +55,7 @@ void SystemBase::disable()
         return;
     }
 
+    m_isEnabled = false;
     onDisabled();
 }
 
