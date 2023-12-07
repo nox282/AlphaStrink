@@ -6,8 +6,6 @@
 #include <ECS/EntityRegistry.h>
 #include <ECS/RegistryView.h>
 
-#include <RenderAPI/IRenderSystem.h>
-
 #include <glm/ext/matrix_clip_space.hpp>
 #include <algorithm>
 #include <glm/ext/matrix_transform.hpp>

@@ -52,7 +52,5 @@ namespace Mani
 		
 	private:
 		EntityId m_cameraId;
-
-		std::weak_ptr<IRenderSystem> m_renderSystem;
 	};
 }
