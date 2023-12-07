@@ -10,7 +10,6 @@ namespace Mani
 {
 	class EntityRegistry;
 	class SystemContainer;
-	class IRenderSystem;
 	struct Transform;
 
 	struct CameraConfig
