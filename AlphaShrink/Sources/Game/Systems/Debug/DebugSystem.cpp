@@ -4,8 +4,9 @@
 #include <FloatingCamera/FloatingCameraControllerSystem.h>
 #include <Inputs/InputSystem.h>
 
-#include "Game/Systems/PlayerCameraSystem.h"
-#include "Game/Systems/PlayerSystem.h"
+#include "Game/Systems/Player/PlayerCameraSystem.h"
+#include "Game/Systems/Player/ReticuleSystem.h"
+#include "Game/Systems/Player/ShipSystem.h"
 
 std::string_view DebugSystem::getName() const
 {
@@ -31,7 +32,8 @@ void DebugSystem::onInitialize(Mani::EntityRegistry& registry, Mani::SystemConta
 
 	m_floatingCameraSystem = systemContainer.initializeDependency<Mani::FloatingCameraControllerSystem>();
 	m_playerCameraSystem = systemContainer.initializeDependency<PlayerCameraSystem>();
-	m_playerSystem = systemContainer.initializeDependency<PlayerSystem>();
+	m_reticuleSystem = systemContainer.initializeDependency<ReticuleSystem>();
+	m_shipSystem = systemContainer.initializeDependency<ShipSystem>();
 }
 
 void DebugSystem::onDeinitialize(Mani::EntityRegistry& registry)
@@ -51,7 +53,7 @@ void DebugSystem::onInputAction(uint32_t userId, const Mani::InputAction& inputA
 		return;
 	}
 
-	if (m_playerCameraSystem.expired() || m_floatingCameraSystem.expired() || m_playerSystem.expired())
+	if (m_playerCameraSystem.expired() || m_floatingCameraSystem.expired() || m_reticuleSystem.expired() || m_shipSystem.expired())
 	{
 		return;
 	}
@@ -60,17 +62,21 @@ void DebugSystem::onInputAction(uint32_t userId, const Mani::InputAction& inputA
 
 	std::shared_ptr<Mani::FloatingCameraControllerSystem> floatingCameraSystem = m_floatingCameraSystem.lock();
 	std::shared_ptr<PlayerCameraSystem> playerCameraSystem = m_playerCameraSystem.lock();
-	std::shared_ptr<PlayerSystem> playerSystem = m_playerSystem.lock();
+	std::shared_ptr<ReticuleSystem> reticuleSystem = m_reticuleSystem.lock();
+	std::shared_ptr<ShipSystem> shipSystem = m_shipSystem.lock();
+
 	if (isDebugging)
 	{
 		playerCameraSystem->disable();
-		playerSystem->disable();
+		reticuleSystem->disable();
+		shipSystem->disable();
 		floatingCameraSystem->enable();
 	}
 	else
 	{
 		floatingCameraSystem->disable();
-		playerSystem->enable();
+		reticuleSystem->enable();
+		shipSystem->enable();
 		playerCameraSystem->enable();
 	}
 }

@@ -4,20 +4,22 @@
 #include <Core/System/System.h>
 #include <ECS/Entity.h>
 #include <glm/glm.hpp>
+#include <memory>
 
 namespace Mani
 {
 	class EntityRegistry;
 	class SystemContainer;
+	class IRenderSystem;
 	struct Transform;
 
 	struct CameraConfig
 	{
 		float fov = 45.f;
-		float width = 800.f;
-		float height = 800.f;
 		float nearClipPlane = .1f;
 		float farClipPlane = 1000.f;
+		float width = 800.f;
+		float height = 800.f;
 
 		float getAspectRatio() const;
 	};
@@ -50,5 +52,7 @@ namespace Mani
 		
 	private:
 		EntityId m_cameraId;
+
+		std::weak_ptr<IRenderSystem> m_renderSystem;
 	};
 }

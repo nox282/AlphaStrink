@@ -5,9 +5,12 @@
 #include <OpenGL/Render/OpenGLRenderSystem.h>
 #include <OpenGL/OpenGLSystem.h>
 
-#include "Game/Systems/PlayerSystem.h"
+#include "Game/Systems/Player/PlayerSystem.h"
+#include "Game/Systems/Player/ReticuleSystem.h"
+#include "Game/Systems/Player/ShipSystem.h"
+#include "Game/Systems/Player/PlayerCameraSystem.h"
+
 #include "Game/Systems/GameSceneSystem.h"
-#include "Game/Systems/PlayerCameraSystem.h"
 #include "Game/Systems/PlayAreaSystem.h"
 #include <Game/Systems/Debug/DebugSystem.h>
 
@@ -21,7 +24,6 @@ int main(int argc, char** argv)
 {
 	Application app;
 	SystemContainer& appSystemContainer= app.getSystemContainer();
-
 	appSystemContainer.createSystem<OpenGLSystem>();
 	std::shared_ptr<WorldSystem> worldSystem = appSystemContainer.initializeDependency<WorldSystem>().lock();;
 
@@ -39,6 +41,8 @@ void initializeGameWorld(const std::shared_ptr<World>& world)
 		.createSystem<DebugSystem>()
 		.createSystem<PlayAreaSystem>()
 		.createSystem<PlayerSystem>()
+		.createSystem<ReticuleSystem>()
+		.createSystem<ShipSystem>()
 		.createSystem<PlayerCameraSystem>()
 		.createSystem<GameSceneSystem>();
 }

@@ -2,7 +2,6 @@
 
 #include <Camera/CameraSystem.h>
 
-#include <Game/Systems/PlayerSystem.h>
 #include <Game/Systems/PlayAreaSystem.h>
 #include <Game/Components/BoxComponent.h>
 

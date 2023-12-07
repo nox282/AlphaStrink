@@ -1,9 +1,14 @@
 #include "CameraSystem.h"
-#include <ECS/EntityRegistry.h>
+
 #include <Core/Components/Transform.h>
-#include <ECS/RegistryView.h>
-#include <glm/ext/matrix_clip_space.hpp>
 #include <Core/CoreAssert.h>
+
+#include <ECS/EntityRegistry.h>
+#include <ECS/RegistryView.h>
+
+#include <RenderAPI/IRenderSystem.h>
+
+#include <glm/ext/matrix_clip_space.hpp>
 #include <algorithm>
 #include <glm/ext/matrix_transform.hpp>
 
@@ -54,7 +59,7 @@ void CameraSystem::tick(float deltaTime, EntityRegistry& registry)
         const CameraConfig& config = cameraComponent->config;
         MANI_ASSERT(std::abs(config.height) > FLT_EPSILON, "Height of a camera cannot be 0.");
         cameraComponent->projection = glm::perspective(glm::radians(config.fov), 
-                                                        config.width / config.height, 
+                                                        config.width / config.height,
                                                         config.nearClipPlane, 
                                                         config.farClipPlane);
     }

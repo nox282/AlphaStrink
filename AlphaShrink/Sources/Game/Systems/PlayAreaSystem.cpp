@@ -23,7 +23,7 @@ void PlayAreaSystem::onInitialize(Mani::EntityRegistry& registry, Mani::SystemCo
 	playAreaTransform->rotation = glm::angleAxis(glm::radians(45.f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	BoxComponent* boxComponent = registry.addComponent<BoxComponent>(m_playAreaEntityId);
-	boxComponent->extent = glm::vec3(10.f, 10.f, 5.f);
+	boxComponent->extent = glm::vec3(35.f, 20.f, 30.f);
 }
 
 void PlayAreaSystem::onDeinitialize(Mani::EntityRegistry& registry)
@@ -42,8 +42,11 @@ void PlayAreaSystem::tick(float deltaTime, Mani::EntityRegistry& registry)
 		PlayAreaChild* playAreaChild = registry.getComponent<PlayAreaChild>(entityId);
 		Mani::Transform* transform = registry.getComponent<Mani::Transform>(entityId);
 
-		// clamp local position
-		playAreaChild->localTransform.position = glm::clamp(playAreaChild->localTransform.position, -playAreaBox->extent, playAreaBox->extent);
+		if (playAreaChild->isBoundToPlayArea)
+		{
+			// clamp local position
+			playAreaChild->localTransform.position = glm::clamp(playAreaChild->localTransform.position, -playAreaBox->extent, playAreaBox->extent);
+		}
 
 		// apply world transformation
 		transform->position = playAreaChild->localTransform.position;

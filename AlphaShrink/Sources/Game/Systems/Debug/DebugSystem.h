@@ -11,7 +11,8 @@ namespace Mani
 }
 
 class PlayerCameraSystem;
-class PlayerSystem;
+class ReticuleSystem;
+class ShipSystem;
 
 class DebugSystem : public Mani::SystemBase
 {
@@ -29,7 +30,8 @@ private:
 	std::weak_ptr<Mani::InputSystem> m_inputSystem;
 	std::weak_ptr<Mani::FloatingCameraControllerSystem> m_floatingCameraSystem;
 	std::weak_ptr<PlayerCameraSystem> m_playerCameraSystem;
-	std::weak_ptr<PlayerSystem> m_playerSystem;
+	std::weak_ptr<ReticuleSystem> m_reticuleSystem;
+	std::weak_ptr<ShipSystem> m_shipSystem;
 	
 	Mani::EventHandle onInputActionHandle;
 	bool isDebugging = false;

@@ -27,9 +27,9 @@ namespace Mani
 		// returns true if a system was created.
 		template<Derived<SystemBase> TSystem>
 		SystemContainer& createSystem();
-
+		
 		template<typename TSystem>
-		std::weak_ptr<TSystem> getSystem() const;
+		std::weak_ptr<TSystem> getSystem();
 
 		// creates, initializes then return a shared pointer to the TSystem
 		// this is most notably useful to allow a system to initialize a dependency and receive a pointer to it
@@ -75,7 +75,7 @@ namespace Mani
 	}
 
 	template<typename TSystem>
-	inline std::weak_ptr<TSystem> SystemContainer::getSystem() const
+	inline std::weak_ptr<TSystem> SystemContainer::getSystem()
 	{
 		for (auto& system : m_systems)
 		{
