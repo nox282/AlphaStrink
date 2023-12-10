@@ -1,5 +1,5 @@
 #include "SystemContainer.h"
-#include <CoreAssert.h>
+#include <ManiAssert.h>
 
 using namespace Mani;
 

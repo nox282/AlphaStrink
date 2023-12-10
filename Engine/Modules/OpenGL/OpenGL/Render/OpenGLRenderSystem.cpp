@@ -1,6 +1,6 @@
 #include "OpenGLRenderSystem.h"
 #include <Core/Log.h>
-#include <Core/CoreAssert.h>
+#include <Core/ManiAssert.h>
 
 #include <Core/Components/Transform.h>
 

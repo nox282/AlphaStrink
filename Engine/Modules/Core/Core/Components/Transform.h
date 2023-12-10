@@ -1,13 +1,14 @@
 #pragma once
 
 #include <Core/Core.h>
+#include <Core/Interfaces/IJsonAsset.h>
 #include <ECS/Entity.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
 
 namespace Mani
 {
-	struct Transform
+	struct Transform : public IJsonAsset
 	{
 		glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
 		glm::quat rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
@@ -27,6 +28,7 @@ namespace Mani
 		glm::vec3 up() const;
 		glm::vec3 right() const;
 
-		void apply(const Transform& other);
+		virtual void parse(const std::string_view& content) override;
+		virtual std::string toJson() override;
 	};
 }

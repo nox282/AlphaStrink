@@ -1,7 +1,7 @@
 #include "CameraSystem.h"
 
 #include <Core/Components/Transform.h>
-#include <Core/CoreAssert.h>
+#include <Core/ManiAssert.h>
 
 #include <ECS/EntityRegistry.h>
 #include <ECS/RegistryView.h>

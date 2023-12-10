@@ -1,5 +1,5 @@
 #include "TransformSystem.h"
-#include <Core/CoreAssert.h>
+#include <Core/ManiAssert.h>
 
 using namespace Mani;
 

@@ -2,7 +2,7 @@
 
 #include <Core/Components/Transform.h>
 
-namespace ManiEngine
+namespace Mani
 {
 	struct Node
 	{

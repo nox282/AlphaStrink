@@ -5,7 +5,7 @@
 
 #include <Core/Application.h>
 #include <Core/Log.h>
-#include <Core/CoreAssert.h>
+#include <Core/ManiAssert.h>
 
 #include <Camera/CameraSystem.h>
 

@@ -1,9 +1,10 @@
 #include "MeshImporter.h"
 
-#include <Core/CoreAssert.h>
+#include <Core/ManiAssert.h>
 #include <Core/FileSystem.h>
 
 #include <RenderAPI/Mesh.h>
+#include <RenderAPI/Scene.h>
 #include <RenderAPI/Material.h>
 
 #include <assimp/Importer.hpp>
@@ -15,7 +16,7 @@
 using namespace Mani;
 using namespace nlohmann;
 
-bool MeshImporter::importFromPath(const std::filesystem::path& path, std::vector<std::shared_ptr<Mesh>>& outMeshes)
+bool MeshImporter::importFromPath(const std::filesystem::path& path, std::vector<std::shared_ptr<Mesh>>& outMeshes, std::shared_ptr<Scene> outScene)
 {
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(path.string(), aiProcess_Triangulate | aiProcess_FlipUVs);
