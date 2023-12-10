@@ -5,6 +5,13 @@
 
 namespace Mani
 {
+	enum class ETickGroup : uint8_t
+	{
+		PreTick = 0,
+		Tick = 1,
+		PostTick = 2,
+	};
+
 	class EntityRegistry;
 	class SystemContainer;
 	
@@ -13,6 +20,7 @@ namespace Mani
 	public:
 		virtual std::string_view getName() const;
 		virtual bool shouldTick(EntityRegistry& registry) const;
+		virtual ETickGroup getTickGroup() const;
 
 		void initialize(EntityRegistry& registry, SystemContainer& systemContainer);
 		void deinitialize(EntityRegistry& registry);

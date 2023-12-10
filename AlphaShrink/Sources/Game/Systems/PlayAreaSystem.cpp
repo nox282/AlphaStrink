@@ -33,25 +33,29 @@ void PlayAreaSystem::onDeinitialize(Mani::EntityRegistry& registry)
 
 void PlayAreaSystem::tick(float deltaTime, Mani::EntityRegistry& registry)
 {
-	const Mani::Transform* playAreaTransform = registry.getComponent<Mani::Transform>(m_playAreaEntityId);
 	const BoxComponent* playAreaBox = registry.getComponent<BoxComponent>(m_playAreaEntityId);
 
-	Mani::RegistryView<Mani::Transform, PlayAreaChild> view(registry);
+	Mani::RegistryView<Mani::Transform, PlayAreaEntity> view(registry);
 	for (const auto& entityId : view)
 	{
-		PlayAreaChild* playAreaChild = registry.getComponent<PlayAreaChild>(entityId);
 		Mani::Transform* transform = registry.getComponent<Mani::Transform>(entityId);
 
-		if (playAreaChild->isBoundToPlayArea)
-		{
-			// clamp local position
-			playAreaChild->localTransform.position = glm::clamp(playAreaChild->localTransform.position, -playAreaBox->extent, playAreaBox->extent);
-		}
-
-		// apply world transformation
-		transform->position = playAreaChild->localTransform.position;
-		transform->rotation = playAreaChild->localTransform.rotation;
-		transform->scale = playAreaChild->localTransform.scale;
-		transform->apply(*playAreaTransform);
+		// clamp local position
+		transform->localPosition = glm::clamp(transform->localPosition, -playAreaBox->extent, playAreaBox->extent);
 	}
+}
+
+const Mani::Transform* PlayAreaSystem::getPlayAreaTransform(const Mani::EntityRegistry& registry) const
+{
+	return registry.getComponent<Mani::Transform>(m_playAreaEntityId);
+}
+
+const BoxComponent* PlayAreaSystem::getPlayAreaBox(const Mani::EntityRegistry& registry) const
+{
+	return registry.getComponent<BoxComponent>(m_playAreaEntityId);
+}
+
+Mani::EntityId PlayAreaSystem::getPlayAreaEntityId() const
+{
+	return m_playAreaEntityId;
 }

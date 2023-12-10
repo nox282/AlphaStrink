@@ -8,13 +8,14 @@ namespace Mani
 	class AssetSystem;
 }
 
+class ReticuleSystem;
+class PlayAreaSystem;
+
 struct Ship
 {
 	uint32_t playerId;
 	Mani::EntityId reticuleId;
 };
-
-class ReticuleSystem;
 
 class ShipSystem : public Mani::SystemBase
 {
@@ -28,8 +29,12 @@ public:
 
 protected:
 	virtual void onInitialize(Mani::EntityRegistry& registry, Mani::SystemContainer& systemContainer) override;
+	virtual void onDeinitialize(Mani::EntityRegistry& registry) override;
 
 private:
 	std::weak_ptr<ReticuleSystem> m_reticuleSystem;
 	std::weak_ptr<Mani::AssetSystem> m_assetSystem;
+	std::weak_ptr<PlayAreaSystem> m_playAreaSystem;
+
+	std::vector<Mani::EntityId> m_shipIds;
 };

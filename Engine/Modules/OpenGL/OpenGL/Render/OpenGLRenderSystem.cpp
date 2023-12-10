@@ -149,7 +149,7 @@ void OpenGLRenderSystem::tick(float deltaTime, EntityRegistry& registry)
 
 		shader->use();
 
-		glm::mat4 modelMatrix = transform->calculate();
+		glm::mat4 modelMatrix = transform->calculateModelMatrix();
 		glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(modelMatrix));
 
 		// set vertex uniforms

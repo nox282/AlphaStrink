@@ -8,6 +8,8 @@ namespace Mani
 	class AssetSystem;
 }
 
+class PlayAreaSystem;
+
 struct Reticule
 {
 	uint32_t playerId;
@@ -36,4 +38,7 @@ protected:
 private:
 	std::weak_ptr<Mani::InputSystem> m_inputSystem;
 	std::weak_ptr<Mani::AssetSystem> m_assetSystem;
+	std::weak_ptr<PlayAreaSystem> m_playAreaSystem;
+
+	std::vector<Mani::EntityId> m_reticuleIds;
 };

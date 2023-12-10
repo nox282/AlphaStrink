@@ -31,8 +31,7 @@ private:
 	std::weak_ptr<Mani::FloatingCameraControllerSystem> m_floatingCameraSystem;
 	std::weak_ptr<PlayerCameraSystem> m_playerCameraSystem;
 	std::weak_ptr<ReticuleSystem> m_reticuleSystem;
-	std::weak_ptr<ShipSystem> m_shipSystem;
-	
+
 	Mani::EventHandle onInputActionHandle;
 	bool isDebugging = false;
 

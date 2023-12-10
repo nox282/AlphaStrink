@@ -69,8 +69,19 @@ namespace Mani
 		{
 			system->initialize(m_registry, *this);
 		}
-		m_systems.push_back(system);
 
+		ETickGroup targetTickGroup = system->getTickGroup();
+		auto insertIt = m_systems.end();
+		for (auto it = m_systems.begin(); it != m_systems.end(); it++)
+		{
+			if ((*it)->getTickGroup() > targetTickGroup)
+			{
+				insertIt = it;
+				break;
+			}
+		}
+
+		m_systems.insert(insertIt, system);
 		return *this;
 	}
 

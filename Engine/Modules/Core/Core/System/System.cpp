@@ -13,6 +13,11 @@ bool SystemBase::shouldTick(EntityRegistry& registry) const
     return false;
 }
 
+ETickGroup SystemBase::getTickGroup() const
+{
+    return ETickGroup::Tick;
+}
+
 void SystemBase::initialize(EntityRegistry& registry, SystemContainer& systemContainer)
 {
     if (m_isInitialized)

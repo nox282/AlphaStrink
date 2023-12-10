@@ -5,7 +5,12 @@
 
 using namespace Mani;
 
-glm::mat4 Transform::calculate() const
+bool Mani::Transform::hasParent() const
+{
+	return isValid(parentId);
+}
+
+glm::mat4 Transform::calculateModelMatrix() const
 {
 	return	glm::translate(glm::mat4(1.0f), position) *
 			glm::toMat4(rotation) *
@@ -32,8 +37,8 @@ glm::vec3 Transform::right() const
 
 void Mani::Transform::apply(const Transform& other)
 {
-	glm::mat4 otherMat4 = other.calculate();
-	glm::mat4 mat4 = calculate();
+	glm::mat4 otherMat4 = other.calculateModelMatrix();
+	glm::mat4 mat4 = calculateModelMatrix();
 	glm::mat4 result = otherMat4 * mat4;
 
 	position = result[3];

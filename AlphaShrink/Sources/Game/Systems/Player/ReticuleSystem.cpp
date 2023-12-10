@@ -8,6 +8,7 @@
 
 #include <Inputs/InputSystem.h>
 
+#include "Game/Components/BoxComponent.h"
 #include "Game/Systems/PlayAreaSystem.h"
 
 std::string_view ReticuleSystem::getName() const
@@ -31,10 +32,15 @@ void ReticuleSystem::onInitialize(Mani::EntityRegistry& registry, Mani::SystemCo
 	}
 
 	m_assetSystem = systemContainer.initializeDependency<Mani::AssetSystem>();
+	m_playAreaSystem = systemContainer.initializeDependency<PlayAreaSystem>();
 }
 
 void ReticuleSystem::onDeinitialize(Mani::EntityRegistry& registry)
 {
+	for (const auto& entityId : m_reticuleIds)
+	{
+		registry.destroy(entityId);
+	}
 }
 
 void ReticuleSystem::tick(float deltaTime, Mani::EntityRegistry& registry)
@@ -46,11 +52,11 @@ void ReticuleSystem::tick(float deltaTime, Mani::EntityRegistry& registry)
 
 	std::shared_ptr<Mani::InputSystem> inputSystem = m_inputSystem.lock();
 
-	Mani::RegistryView<Reticule, PlayAreaChild> reticuleView(registry);
+	Mani::RegistryView<Reticule, Mani::Transform> reticuleView(registry);
 	for (const auto& entityId : reticuleView)
 	{
 		Reticule* reticule = registry.getComponent<Reticule>(entityId);
-		PlayAreaChild* playAreaChild = registry.getComponent<PlayAreaChild>(entityId);
+		Mani::Transform* transform = registry.getComponent<Mani::Transform>(entityId);
 
 		const Mani::InputAction* aimAction = inputSystem->getAction(reticule->playerId, Actions::AIM_ACTION);
 		if (aimAction == nullptr)
@@ -65,7 +71,7 @@ void ReticuleSystem::tick(float deltaTime, Mani::EntityRegistry& registry)
 			return;
 		}
 
-		playAreaChild->localTransform.position += delta * 0.1f;
+		transform->localPosition += delta * 0.1f;
 
 		// we should have the option to consider mous inputs as normal axis
 		reticule->previousPosition = input;
@@ -74,27 +80,34 @@ void ReticuleSystem::tick(float deltaTime, Mani::EntityRegistry& registry)
 
 Mani::EntityId ReticuleSystem::spawnReticule(uint32_t playerId, Mani::EntityRegistry& registry)
 {
-	if (m_assetSystem.expired())
+	if (m_assetSystem.expired() || m_playAreaSystem.expired())
 	{
 		return Mani::INVALID_ID;
 	}
 
 	std::shared_ptr<Mani::AssetSystem> assetSystem = m_assetSystem.lock();
+	std::shared_ptr<PlayAreaSystem> playAreaSystem = m_playAreaSystem.lock();
+
+	const BoxComponent* playArea = playAreaSystem->getPlayAreaBox(registry);
+	if (playArea == nullptr)
+	{
+		return Mani::INVALID_ID;
+	}
 
 	Mani::EntityId entityId = registry.create();
 
-	registry.addComponent<Mani::Transform>(entityId);
+	Mani::Transform* transform = registry.addComponent<Mani::Transform>(entityId);
+	transform->parentId = playAreaSystem->getPlayAreaEntityId();
+	transform->localPosition.z = playArea->extent.z;
 
 	Reticule* reticule = registry.addComponent<Reticule>(entityId);
 	reticule->playerId = playerId;
 
-	PlayAreaChild* playAreaChild = registry.addComponent<PlayAreaChild>(entityId);
-	playAreaChild->localTransform.position.z = 10.f;
-	playAreaChild->isBoundToPlayArea = false;
-
 	Mani::MeshComponent* meshComponent = registry.addComponent<Mani::MeshComponent>(entityId);
 	meshComponent->mesh = assetSystem->loadJsonAsset<Mani::Mesh>("AlphaShrink/Assets/Meshes/sphere.mesh");
 	meshComponent->material = assetSystem->loadJsonAsset<Mani::Material>("AlphaShrink/Assets/Materials/green.material");
+
+	m_reticuleIds.push_back(entityId);
 
 	return entityId;
 }
