@@ -55,6 +55,8 @@ void Mani::Transform::parse(const std::string_view& content)
 
 	json object = json::parse(content);
 
+	parentId = object["parentId"];
+
 	std::vector<float> rawData = object["trasnform"];
 
 	position.x = rawData[0];
@@ -117,6 +119,7 @@ std::string Mani::Transform::toJson()
 	rawData.push_back(localScale.z);
 
 	output["transform"] = rawData;
+	output["parentId"] = parentId;
 
 	return output.dump();
 }
