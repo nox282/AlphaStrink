@@ -11,8 +11,9 @@
 #include <assimp/postprocess.h>
 
 using namespace Mani;
+namespace fs = std::filesystem;
 
-bool SceneImporter::importFromPath(const std::filesystem::path& path, const std::shared_ptr<Scene>& outScene, const std::vector<std::shared_ptr<Mesh>>& meshes)
+bool SceneImporter::importFromPath(const fs::path& path, const std::shared_ptr<Scene>& outScene, const std::vector<std::shared_ptr<Mesh>>& meshes)
 {
 	Assimp::Importer importer;
 	const aiScene* aiScene = importer.ReadFile(path.string(), aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -27,20 +28,32 @@ bool SceneImporter::importFromPath(const std::filesystem::path& path, const std:
 	outScene->root = rootNode.id;
 	outScene->nodes.push_back(rootNode);
 
-	const std::filesystem::path parentPath = path.parent_path();
-	processNode(aiScene->mRootNode, aiScene, 0, parentPath, outScene);
+	// get the path of the parent directory
+	const fs::path parentPath = path.parent_path();
+
+	fs::path rootPath;
+	if (!FileSystem::tryGetRootPath(rootPath))
+	{
+		MANI_LOG_ERROR(LogSceneImporter, "Could not get root path");
+		return false;
+	}
+
+	// transform the parent directory path to a relative path
+	const fs::path relativePath = fs::relative(parentPath, rootPath);
+
+	processNode(aiScene->mRootNode, aiScene, 0, relativePath, outScene);
 
 	return true;
 }
 
-bool Mani::SceneImporter::exportToPath(const std::filesystem::path& path, const std::shared_ptr<Scene>& scene)
+bool Mani::SceneImporter::exportToPath(const fs::path& path, const std::shared_ptr<Scene>& scene)
 {
 	MANI_ASSERT(scene != nullptr, "provided scene cannot be null");
 
 	return FileSystem::tryWriteFile(path, scene->toJson());
 }
 
-void SceneImporter::processNode(aiNode* aiNode, const aiScene* aiScene, size_t parent, const std::filesystem::path path, const std::shared_ptr<Scene>& outScene)
+void SceneImporter::processNode(aiNode* aiNode, const aiScene* aiScene, size_t parent, const fs::path path, const std::shared_ptr<Scene>& outScene)
 {
 	if (aiNode == nullptr)
 	{
