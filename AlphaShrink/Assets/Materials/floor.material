@@ -8,7 +8,7 @@
         "w": 0.0
     },
     "shaderPath": "Engine/Assets/Shaders/baseLit.shader",
-    "diffusePath": "Sandbox/Assets/Textures/floor.png",
-    "specularPath": "Sandbox/Assets/Textures/floor.png",
+    "diffusePath": "AlphaShrink/Assets/Textures/floor.png",
+    "specularPath": "AlphaShrink/Assets/Textures/floor.png",
     "shininess": 32.0
 }

@@ -2,6 +2,8 @@
 
 #include <Assets/AssetSystem.h>
 
+#include <Scene/SceneSystem.h>
+
 #include <RenderAPI/MeshComponent.h>
 #include <RenderAPI/Mesh.h>
 #include <RenderAPI/Material.h>
@@ -36,6 +38,13 @@ void GameSceneSystem::onInitialize(Mani::EntityRegistry& registry, Mani::SystemC
 	light->diffuse = glm::vec3(.9f, .9f, .8f);
 	light->specular = glm::vec3(.9f, .9f, .8f);
 	light->direction = glm::normalize(-transform->position);
+
+	std::shared_ptr<Mani::SceneSystem> sceneSystem = systemContainer.initializeDependency<Mani::SceneSystem>().lock();
+	Mani::EntityId sceneEntityId = sceneSystem->spawnScene(registry, "AlphaShrink/Assets/Meshes/U_ground_scene/U_ground_scene.scene");
+	Mani::Transform* sceneTransform = registry.getComponent<Mani::Transform>(sceneEntityId);
+	sceneTransform->position = glm::vec3(50.f, -20.f, 50.f);
+	sceneTransform->rotation = glm::angleAxis(glm::radians(-45.f), glm::vec3(0.f, 1.f, 0.f));
+	sceneTransform->scale = glm::vec3(2.f);
 }
 
 void GameSceneSystem::onDeinitialize(Mani::EntityRegistry& registry)

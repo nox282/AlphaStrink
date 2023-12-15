@@ -56,6 +56,6 @@ project "AlphaShrink"
 
     files { "%{prj.name}/Sources/**.h", "%{prj.name}/Sources/**.cpp" }
 
-    links { "Core", "OpenGL", "ECS", "Camera", "FloatingCamera", "Assets", "RenderAPI" }
+    links { "Core", "OpenGL", "ECS", "Camera", "FloatingCamera", "Assets", "RenderAPI", "Scene" }
 
     includedirs { moduledir .. "/**", "%{prj.name}/Sources/" }
