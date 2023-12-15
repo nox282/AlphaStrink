@@ -104,7 +104,7 @@ void importModel(const fs::path& path)
 	}
 
 	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
-	if (!SceneImporter::importFromPath(path, scene, meshes))
+	if (!SceneImporter::importFromPath(path, scene))
 	{
 		MANI_LOG_ERROR(Log, "Could not import scene from {}", path.string());
 		return;

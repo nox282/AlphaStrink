@@ -17,11 +17,10 @@ namespace Mani
 	class SceneImporter
 	{
 	public:
-		static bool importFromPath(const std::filesystem::path& path, const std::shared_ptr<Scene>& outScene, const std::vector<std::shared_ptr<Mesh>>& meshes);
+		static bool importFromPath(const std::filesystem::path& path, const std::shared_ptr<Scene>& outScene);
 		static bool exportToPath(const std::filesystem::path& path, const std::shared_ptr<Scene>& scene);
 
 	private:
-		static void processNode(aiNode* aiNode, const aiScene* aiScene, size_t parent, const std::filesystem::path path, const std::shared_ptr<Scene>& outScene);
-		static size_t makeNode(const aiMatrix4x4& aiMatrix, const std::shared_ptr<Scene>& scene);
+		static void processNode(aiNode* aiNode, const aiScene* aiScene, const std::filesystem::path path, const std::shared_ptr<Scene>& outScene);
 	};
 }

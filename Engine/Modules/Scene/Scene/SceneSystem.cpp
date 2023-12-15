@@ -36,25 +36,18 @@ EntityId SceneSystem::spawnScene(EntityRegistry& registry, const std::filesystem
 		return INVALID_ID;
 	}
 
-	std::unordered_map<size_t, EntityId> nodeIdToEntityMap;
-	for (const auto& node : scene->nodes)
-	{
-		nodeIdToEntityMap[node.id] = spawnNode(registry, node, assetSystem);
-	}
+	const EntityId rootNodeEntityId = spawnNode(registry, Scene::Node(), assetSystem);
 
 	for (const auto& node : scene->nodes)
 	{
-		if (!node.hasParent())
-		{
-			continue;
-		}
 
-		const EntityId nodeEntityId = nodeIdToEntityMap[node.id];
+		const EntityId nodeEntityId = spawnNode(registry, node, assetSystem);
+		
 		Transform* nodeTransform = registry.getComponent<Transform>(nodeEntityId);
-		nodeTransform->parentId = nodeIdToEntityMap[node.parent];
+		nodeTransform->parentId = rootNodeEntityId;
 	}
 
-	return nodeIdToEntityMap[scene->root];
+	return rootNodeEntityId;
 }
 
 EntityId SceneSystem::spawnNode(EntityRegistry& registry, const Scene::Node& node, const std::shared_ptr<AssetSystem>& assetSystem)

@@ -5,15 +5,9 @@
 using namespace Mani;
 using namespace nlohmann;
 
-bool Scene::Node::hasParent() const 
-{
-	return parent != UINT64_MAX;
-}
-
 void Scene::parse(const std::string_view& content) 
 {
 	nodes.clear();
-	root = UINT64_MAX;
 
 	if (content.empty())
 	{
@@ -21,14 +15,12 @@ void Scene::parse(const std::string_view& content)
 	}
 
 	json object = json::parse(content);
-	root = object["root"];
 	std::vector<json> rawNodes = object["nodes"];
 	for (const auto& rawNode : rawNodes)
 	{
 		Node node;
 		node.id = rawNode["id"];
 		node.meshAsset = std::filesystem::path(rawNode["meshAsset"].get<std::string>());
-		node.parent = rawNode["parent"];
 		
 		node.localPosition.x = rawNode["localPosition"]["x"];
 		node.localPosition.y = rawNode["localPosition"]["y"];
@@ -50,7 +42,6 @@ void Scene::parse(const std::string_view& content)
 std::string Scene::toJson() 
 {
 	json output;
-	output["root"] = root;
 
 	std::vector<json> rawNodes;
 	for (const auto& node : nodes)
@@ -58,7 +49,6 @@ std::string Scene::toJson()
 		json rawNode;
 		rawNode["id"] = node.id;
 		rawNode["meshAsset"] = node.meshAsset;
-		rawNode["parent"] = node.parent;
 
 		rawNode["localPosition"]["x"] = node.localPosition.x;
 		rawNode["localPosition"]["y"] = node.localPosition.y;
