@@ -13,6 +13,7 @@
 #include "Game/Systems/GameSceneSystem.h"
 #include "Game/Systems/PlayAreaSystem.h"
 #include <Game/Systems/Debug/DebugSystem.h>
+#include <Game/Systems/Environment/LevelBlockSystem.h>
 
 #include <FloatingCamera/FloatingCameraControllerSystem.h>
 
@@ -44,5 +45,6 @@ void initializeGameWorld(const std::shared_ptr<World>& world)
 		.createSystem<ReticuleSystem>()
 		.createSystem<ShipSystem>()
 		.createSystem<PlayerCameraSystem>()
-		.createSystem<GameSceneSystem>();
+		.createSystem<GameSceneSystem>()
+		.createSystem<LevelBlockSystem>();
 }

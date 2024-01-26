@@ -22,7 +22,7 @@ void SceneSystem::onInitialize(EntityRegistry& registry, SystemContainer& system
 	m_assetSystem = systemContainer.initializeDependency<AssetSystem>();
 }
 
-EntityId SceneSystem::spawnScene(EntityRegistry& registry, const std::filesystem::path& path)
+EntityId SceneSystem::spawnScene(EntityRegistry& registry, const std::filesystem::path& path, const std::filesystem::path& materialAssetPath)
 {
 	if (m_assetSystem.expired())
 	{
@@ -36,12 +36,12 @@ EntityId SceneSystem::spawnScene(EntityRegistry& registry, const std::filesystem
 		return INVALID_ID;
 	}
 
-	const EntityId rootNodeEntityId = spawnNode(registry, Scene::Node(), assetSystem);
+	const EntityId rootNodeEntityId = spawnNode(registry, Scene::Node(), assetSystem, materialAssetPath);
 
 	for (const auto& node : scene->nodes)
 	{
 
-		const EntityId nodeEntityId = spawnNode(registry, node, assetSystem);
+		const EntityId nodeEntityId = spawnNode(registry, node, assetSystem, materialAssetPath);
 		
 		Transform* nodeTransform = registry.getComponent<Transform>(nodeEntityId);
 		nodeTransform->parentId = rootNodeEntityId;
@@ -50,7 +50,7 @@ EntityId SceneSystem::spawnScene(EntityRegistry& registry, const std::filesystem
 	return rootNodeEntityId;
 }
 
-EntityId SceneSystem::spawnNode(EntityRegistry& registry, const Scene::Node& node, const std::shared_ptr<AssetSystem>& assetSystem)
+EntityId SceneSystem::spawnNode(EntityRegistry& registry, const Scene::Node& node, const std::shared_ptr<AssetSystem>& assetSystem, const std::filesystem::path& materialAssetPath)
 {
 	if (assetSystem == nullptr)
 	{
@@ -72,7 +72,7 @@ EntityId SceneSystem::spawnNode(EntityRegistry& registry, const Scene::Node& nod
 			return INVALID_ID;
 		}
 
-		std::shared_ptr<Material> material = assetSystem->loadJsonAsset<Material>("AlphaShrink/Assets/Materials/floor.material");
+		std::shared_ptr<Material> material = assetSystem->loadJsonAsset<Material>(materialAssetPath);
 		if (mesh == nullptr)
 		{
 			return INVALID_ID;

@@ -109,11 +109,11 @@ Mani::EntityId ShipSystem::spawnShip(uint32_t playerId, Mani::EntityRegistry& re
 	Mani::EntityId shipModelId = registry.create();
 	Mani::Transform* shipModelTransform = registry.addComponent<Mani::Transform>(shipModelId);
 	shipModelTransform->parentId = entityId;
-	shipModelTransform->localRotation = glm::angleAxis(glm::radians(-90.f), glm::vec3(0.f, 1.f, 0.f));
+	shipModelTransform->localRotation = glm::angleAxis(glm::radians(90.f), glm::vec3(0.f, 1.f, 0.f));
 
 	Mani::MeshComponent* meshComponent = registry.addComponent<Mani::MeshComponent>(shipModelId);
-	meshComponent->mesh = assetSystem->loadJsonAsset<Mani::Mesh>("AlphaShrink/Assets/Meshes/Ship/ship.mesh");
-	meshComponent->material = assetSystem->loadJsonAsset<Mani::Material>("AlphaShrink/Assets/Materials/redLit.material");
+	meshComponent->mesh = assetSystem->loadJsonAsset<Mani::Mesh>("AlphaShrink/Assets/Meshes/Ship/ship02.mesh");
+	meshComponent->material = assetSystem->loadJsonAsset<Mani::Material>("AlphaShrink/Assets/Materials/Color_ship.material");
 
 	m_shipIds.push_back(entityId);
 	m_shipIds.push_back(shipModelId);
