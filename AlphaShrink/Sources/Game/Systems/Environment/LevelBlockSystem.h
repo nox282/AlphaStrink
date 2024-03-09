@@ -33,4 +33,7 @@ private:
 	std::vector<Mani::EntityId> m_levelBlocks;
 
 	void spawnLevelBlock(Mani::EntityRegistry& registry);
+	void moveFirstLevelBlockIfNecessary(Mani::EntityRegistry& registry);
+
+	glm::vec3 getLastLevelBlockAnchor(const Mani::EntityRegistry& registry) const;
 };

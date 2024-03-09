@@ -16,7 +16,7 @@ namespace Mani
 	{
 		float fov = 45.f;
 		float nearClipPlane = .1f;
-		float farClipPlane = 1000.f;
+		float farClipPlane = 10'000.f;
 		float width = 800.f;
 		float height = 800.f;
 

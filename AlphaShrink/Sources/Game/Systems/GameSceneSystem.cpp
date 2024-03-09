@@ -30,7 +30,7 @@ void GameSceneSystem::onInitialize(Mani::EntityRegistry& registry, Mani::SystemC
 	meshComponent->material = assetSystem->loadJsonAsset<Mani::Material>("AlphaShrink/Assets/Materials/light.material");
 
 	Mani::Transform* transform = registry.addComponent<Mani::Transform>(sunEntityId);
-	transform->position = glm::vec3(500.f, 100.0f, 500.0f);
+	transform->position = glm::vec3(5000.f, 1000.0f, 5000.0f);
 	transform->scale = glm::vec3(50.0f, 50.0f, 50.0f);
 
 	Mani::DirectionalLightComponent* light = registry.addComponent<Mani::DirectionalLightComponent>(sunEntityId);
